@@ -4,14 +4,16 @@ using CriadoresCaes.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CriadoresCaes.Data.Migrations
 {
     [DbContext(typeof(CriadoresCaesDB))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210518151816_UserName")]
+    partial class UserName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,9 +199,6 @@ namespace CriadoresCaes.Data.Migrations
                     b.Property<string>("Telemovel")
                         .HasMaxLength(14)
                         .HasColumnType("nvarchar(14)");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
