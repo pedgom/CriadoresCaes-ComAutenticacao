@@ -172,7 +172,17 @@ namespace CriadoresCaes.Controllers
              * e, a minha expressão fica: _context.Caes.OrderBy(c=>c.Nome)
              * 
             */
-            ViewData["CaoFK"] = new SelectList(_context.Caes.OrderBy(c => c.Nome), "Id", "Nome");
+
+            // _context.Caes.OrderBy(c => c.Nome)  -> obtem a lista de todos os Cães
+            // mas, queremos apenas a lista de cães do utilizador autenticado
+            var caes = (from c in _context.Caes
+                        join cc in _context.CriadoresDeCaes on c.Id equals cc.CaoFK
+                        join cr in _context.Criadores on cc.CriadorFK equals cr.Id
+                        where cr.UserName == _userManager.GetUserId(User)
+                        select c)
+                       .OrderBy(c => c.Nome);
+
+            ViewData["CaoFK"] = new SelectList(caes, "Id", "Nome");
 
 
             return View();
@@ -195,7 +205,13 @@ namespace CriadoresCaes.Controllers
                 // não foi escolhido um cão válido 
                 ModelState.AddModelError("", "Não se esqueça de escolher um cão...");
                 // devolver o controlo à View
-                ViewData["CaoFK"] = new SelectList(_context.Caes.OrderBy(c => c.Nome), "Id", "Nome");
+                var caes = (from c in _context.Caes
+                            join cc in _context.CriadoresDeCaes on c.Id equals cc.CaoFK
+                            join cr in _context.Criadores on cc.CriadorFK equals cr.Id
+                            where cr.UserName == _userManager.GetUserId(User)
+                            select c)
+                   .OrderBy(c => c.Nome);
+                ViewData["CaoFK"] = new SelectList(caes, "Id", "Nome");
                 return View(foto);
             }
 
@@ -222,7 +238,13 @@ namespace CriadoresCaes.Controllers
                 // adicionar msg de erro
                 ModelState.AddModelError("", "Adicione, por favor, a fotografia do cão");
                 // devolver o controlo à View
-                ViewData["CaoFK"] = new SelectList(_context.Caes.OrderBy(c => c.Nome), "Id", "Nome");
+                var caes = (from c in _context.Caes
+                            join cc in _context.CriadoresDeCaes on c.Id equals cc.CaoFK
+                            join cr in _context.Criadores on cc.CriadorFK equals cr.Id
+                            where cr.UserName == _userManager.GetUserId(User)
+                            select c)
+                  .OrderBy(c => c.Nome);
+                ViewData["CaoFK"] = new SelectList(caes, "Id", "Nome");
                 return View(foto);
             }
             else
@@ -253,7 +275,14 @@ namespace CriadoresCaes.Controllers
                     // adicionar msg de erro
                     ModelState.AddModelError("", "Só pode escolher uma imagem para a associar ao cão");
                     // devolver o controlo à View
-                    ViewData["CaoFK"] = new SelectList(_context.Caes.OrderBy(c => c.Nome), "Id", "Nome");
+                    var caes = (from c in _context.Caes
+                                join cc in _context.CriadoresDeCaes on c.Id equals cc.CaoFK
+                                join cr in _context.Criadores on cc.CriadorFK equals cr.Id
+                                where cr.UserName == _userManager.GetUserId(User)
+                                select c)
+                 .OrderBy(c => c.Nome);
+
+                    ViewData["CaoFK"] = new SelectList(caes, "Id", "Nome");
                     return View(foto);
                 }
             }
