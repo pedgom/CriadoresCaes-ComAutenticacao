@@ -1,4 +1,5 @@
 ﻿using CriadoresCaes.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +8,30 @@ using System.Text;
 
 namespace CriadoresCaes.Data
 {
-    public class CriadoresCaesDB : IdentityDbContext
+    /// <summary>
+    /// classe para recolher os dados particulares dos Utilizadores
+    /// vamos deixar de usar o 'IdentityUser' e começar a usar este
+    /// A adição desta classe implica:
+    ///    - mudar a classe de criação da Base de Dados
+    ///    - mudar no ficheiro 'startup.cs' a referência ao tipo do utilizador
+    ///    - mudar em todos os ficheiros do projeto a referência a 'IdentityUser' 
+    ///           para 'ApplicationUser'
+    /// </summary>
+    public class ApplicationUser : IdentityUser
+    {
+        
+        /// <summary>
+        /// recolhe a data de registo de um utilizador
+        /// </summary>
+        public DateTime DataRegisto { get; set; }
+
+        // /// <summary>
+        // /// se fizerem isto, estão a adicionar todos os atributos do 'Criador'
+        // /// à tabela de autenticação
+        // /// </summary>
+        // public Criadores Criador { get; set; }
+    }
+    public class CriadoresCaesDB : IdentityDbContext<ApplicationUser>
     {
         //construtor da classe CriadoresDB
         //indicar onde está a BD à qual estas classes serão associadas
@@ -19,6 +43,7 @@ namespace CriadoresCaes.Data
             base.OnModelCreating(modelBuilder);
 
             // insert DB seed
+            
 
             modelBuilder.Entity<Racas>().HasData(
                new Racas { Id = 1, Designacao = "Retriever do Labrador" },

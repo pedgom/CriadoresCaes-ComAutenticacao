@@ -13,8 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CriadoresCaes
+namespace CriadoresCaes   
 {
+   
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -43,7 +44,8 @@ namespace CriadoresCaes
             
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //deixo de referir 'IdentityUser' e passo a usar 'ApplicationUser'
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<CriadoresCaesDB>();
             services.AddControllersWithViews();
         }

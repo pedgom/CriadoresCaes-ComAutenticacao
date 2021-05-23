@@ -9,11 +9,11 @@ namespace CriadoresCaes.Models
 {
 
     /// <summary>
-    /// descrição de cada um dos Cães do criador
+    /// descrição de cada um dos Cães do criador 
     /// </summary>
     public class Caes
     {
-
+        
         public Caes()
         {
             // inicializar a lista de Fotografias de cada um dos cães
