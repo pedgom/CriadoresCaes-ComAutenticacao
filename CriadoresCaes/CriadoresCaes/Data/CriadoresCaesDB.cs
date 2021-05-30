@@ -43,8 +43,11 @@ namespace CriadoresCaes.Data
             base.OnModelCreating(modelBuilder);
 
             // insert DB seed
+
+            
             
 
+            //dados para testes durante o desenvolvimento
             modelBuilder.Entity<Racas>().HasData(
                new Racas { Id = 1, Designacao = "Retriever do Labrador" },
                new Racas { Id = 2, Designacao = "Serra da Estrela" },

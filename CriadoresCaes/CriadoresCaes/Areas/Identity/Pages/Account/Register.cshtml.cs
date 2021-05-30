@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using CriadoresCaes.Models;
 
 namespace CriadoresCaes.Areas.Identity.Pages.Account
 {
@@ -37,13 +38,26 @@ namespace CriadoresCaes.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-        [BindProperty]
+
+        /// <summary>
+        /// Model usado para 'transportar' os dados para a interface de 'Registar'
+        /// </summary>
+        [BindProperty]//garante a existência de 'memória' entre o Model e a interface
         public InputModel Input { get; set; }
 
+        /// <summary>
+        /// serve para redireccionar o utilizador para o 'local' de origem
+        /// </summary>
         public string ReturnUrl { get; set; }
 
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        /*
+         * Classe usada para 'transportar/recolher' os dados da Página para dentro do 'código'
+         */
         public class InputModel
         {
             [Required]
@@ -59,16 +73,33 @@ namespace CriadoresCaes.Areas.Identity.Pages.Account
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "A password e a sua confirmação não correspondem.")]
             public string ConfirmPassword { get; set; }
-        }
 
-        public async Task OnGetAsync(string returnUrl = null)
+            /// <summary>
+            /// Ao anexar um objeto deste tipo ao 'InputModel' estamos a 
+            /// permitir a recolha dos dados do Criador
+            /// </summary>
+            public Criadores Criador { get; set; }
+
+        }
+        /// <summary>
+        /// método a ser executado pela a página, quando o HTTP é invocado em GET
+        /// </summary>
+        /// <param name="returnUrl">link para redirecionar o utilizador, se fornecido</param>
+        /// <returns></returns>
+        public void OnGet(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            //lista dos 'providers' para efetuar autenticaç~~ao externa
+            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
+        /// <summary>
+        /// método a ser executado pela a página, quando o HTTP é invocado em POST
+        /// </summary>
+        /// <param name="returnUrl">link para redirecionar o utilizador, se fornecido</param>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
